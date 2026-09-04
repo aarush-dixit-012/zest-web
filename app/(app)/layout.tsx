@@ -3,7 +3,6 @@ export default function AppLayout({
 }: {
   children: React.ReactNode
   }) {
-  // Later add new components
   return (
     <div>
       {children}
