@@ -7,6 +7,13 @@ function ThemeProvider({
   children,
   ...props
 }: React.ComponentProps<typeof NextThemesProvider>) {
+  const [mounted, setMounted] = React.useState(false)
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+  if (!mounted) {
+    return <>{children}</>
+  }
   return (
     <NextThemesProvider
       attribute="class"
@@ -25,7 +32,6 @@ function isTypingTarget(target: EventTarget | null) {
   if (!(target instanceof HTMLElement)) {
     return false
   }
-
   return (
     target.isContentEditable ||
     target.tagName === "INPUT" ||
@@ -42,27 +48,19 @@ function ThemeHotkey() {
       if (event.defaultPrevented || event.repeat) {
         return
       }
-
       if (event.metaKey || event.ctrlKey || event.altKey) {
         return
       }
-
       if (!event.key || event.key.toLowerCase() !== "d") {
         return
       }
-
       if (isTypingTarget(event.target)) {
         return
       }
-
       setTheme(resolvedTheme === "dark" ? "light" : "dark")
     }
-
     window.addEventListener("keydown", onKeyDown)
-
-    return () => {
-      window.removeEventListener("keydown", onKeyDown)
-    }
+    return () => window.removeEventListener("keydown", onKeyDown)
   }, [resolvedTheme, setTheme])
 
   return null

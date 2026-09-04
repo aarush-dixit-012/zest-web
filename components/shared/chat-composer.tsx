@@ -13,9 +13,10 @@ import {
 interface ChatComposerProps {
   value?: string
   onChange?: (value: string) => void
+  onSubmit?: () => void
 }
 
-export default function ChatComposer({ value, onChange }: ChatComposerProps) {
+export default function ChatComposer({ value, onChange, onSubmit }: ChatComposerProps) {
   return (
     <InputGroup className="flex flex-col min-h-[80px] md:min-h-[100px]">
       <InputGroupTextarea
@@ -23,6 +24,12 @@ export default function ChatComposer({ value, onChange }: ChatComposerProps) {
         className="min-h-[48px] md:min-h-[58px] max-h-[200px] overflow-y-auto text-base md:text-lg placeholder:text-sm md:placeholder:text-[17px]"
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault()
+            onSubmit?.()
+          }
+        }}
       />
       <InputGroupAddon align="block-end" className="justify-between">
         <DropdownMenu>
@@ -40,7 +47,7 @@ export default function ChatComposer({ value, onChange }: ChatComposerProps) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Button className="size-8 md:size-9">
+        <Button className="size-8 md:size-9" onClick={onSubmit}>
           <SendIcon className="size-4 md:size-5" />
         </Button>
       </InputGroupAddon>
