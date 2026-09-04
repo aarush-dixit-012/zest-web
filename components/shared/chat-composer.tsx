@@ -10,10 +10,20 @@ import {
   DropdownMenuItem,
 } from "../ui/dropdown-menu"
 
-export default function ChatComposer() {
+interface ChatComposerProps {
+  value?: string
+  onChange?: (value: string) => void
+}
+
+export default function ChatComposer({ value, onChange }: ChatComposerProps) {
   return (
     <InputGroup className="flex flex-col min-h-[80px] md:min-h-[100px]">
-      <InputGroupTextarea placeholder="Describe your task" className="min-h-[48px] md:min-h-[58px] text-base md:text-lg placeholder:text-sm md:placeholder:text-[17px]" />
+      <InputGroupTextarea
+        placeholder="Describe your task"
+        className="min-h-[48px] md:min-h-[58px] max-h-[200px] overflow-y-auto text-base md:text-lg placeholder:text-sm md:placeholder:text-[17px]"
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+      />
       <InputGroupAddon align="block-end" className="justify-between">
         <DropdownMenu>
           <DropdownMenuTrigger className="inline-flex size-8 md:size-9 items-center justify-center rounded-lg hover:bg-muted hover:text-foreground">
